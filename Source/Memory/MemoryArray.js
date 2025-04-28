@@ -1,6 +1,6 @@
 import { Logger } from "../Utils/Logger.js";
 
-export class MemoryCell
+export class MemoryArray
 {
     constructor(Size)
     {
@@ -8,18 +8,30 @@ export class MemoryCell
         this.View = new Uint8Array(this.Buffer);
     }
 
-    Read(Offset, Size = 1)
+    Read(Offset, Size)
     {
-        if(Offset + Size > this.Size())
-            Logger.RaiseException("Segmentation fault");
+        this.VerifyBounds(Offset, Size)
         return this.View.slice(Offset, Offset + Size);
+    }
+
+    Reset(Offset, Size)
+    {
+        this.VerifyBounds(Offset, Size);
+        this.View.fill(0, Offset, Offset + Size)
     }
 
     Write(Offset, Data)
     {
-        if(Offset + Data.length > this.Size())
-            Logger.RaiseException("Segmentation fault");
+        this.VerifyBounds(Offset, Data.length);
         this.View.set(Data, Offset);
+    }
+
+    VerifyBounds(Offset, Size)
+    {
+        const OffsetValidity = Offset >= 0 && Offset < this.Size();
+        const SizeValidity = Size > 0 && Offset + Size < this.Size();
+        if(!OffsetValidity || !SizeValidity)
+            Logger.RaiseException("Segmentation fault");
     }
 
     Size()
