@@ -1,0 +1,38 @@
+[
+    {
+        "OPCODE" : "LOADC",
+        "VALUE"  : 1
+    },
+    {
+        "OPCODE" : "NEG"
+    },
+
+    {
+        "OPCODE" : "CJUMP",
+        "TARGET" : 5
+    },
+    {
+        "OPCODE" : "LOADC",
+        "VALUE"  : "True Branch"
+    },
+    {
+        "OPCODE" : "PRINT"
+    },
+    {
+        "OPCODE" : "JUMP",
+        "TARGET" : 8
+    },
+
+
+    {
+        "OPCODE" : "LOADC",
+        "VALUE"  : "False Branch"
+    },
+    {
+        "OPCODE" : "PRINT"
+    },
+
+    {
+        "OPCODE" : "END"
+    }
+]

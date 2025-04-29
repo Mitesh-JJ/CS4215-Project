@@ -1,0 +1,49 @@
+[
+    {
+        "OPCODE" : "LOADC",
+        "VALUE"  : 10
+    },
+    {
+        "OPCODE"  : "DEFINE",
+        "ISCONST" : false,
+        "ID"      : "GlobalVar"
+    },
+
+    {
+        "OPCODE" : "PUSHENV"
+    },
+    {
+        "OPCODE" : "LOADC",
+        "VALUE"  : 11
+    },
+    {
+        "OPCODE"  : "DEFINE",
+        "ISCONST" : false,
+        "ID"      : "LocalVar"
+    },
+    {
+        "OPCODE" : "LOADV",
+        "ID"     : "GlobalVar"
+    },
+    {
+        "OPCODE" : "LOADV",
+        "ID"     : "LocalVar"
+    },
+    {
+        "OPCODE" : "ADD"
+    },
+    {
+        "OPCODE" : "PRINT"
+    },
+    {
+        "OPCODE" : "POPENV"
+    },
+
+    {
+        "OPCODE" : "LOADV",
+        "ID"     : "LocalVar"
+    },
+    {
+        "OPCODE" : "END"
+    }
+]

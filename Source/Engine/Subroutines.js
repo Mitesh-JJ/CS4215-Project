@@ -8,6 +8,19 @@ export const Subroutines =
         Executor.Stack.Pop();
     },
 
+    PUSHENV: (Executor, Instruction) =>
+    {
+        Executor.Environment.Push();
+    },
+
+    POPENV: (Executor, Instruction) =>
+    {
+        const Unalloc = Executor.Environment.Pop();
+        Unalloc.forEach((Value, Key, Map) => { Executor.Memory.Deallocate(Value); });
+    },   
+
+
+
     LOADC: (Executor, Instruction) =>
     {
         Executor.Stack.Push(Instruction.VALUE);
@@ -39,6 +52,12 @@ export const Subroutines =
     },
 
 
+
+    NEG: (Executor, Instruction) =>
+    {
+        let Value = Executor.Stack.Pop();
+        Executor.Stack.Push(!Value);
+    },
 
     ADD: (Executor, Instruction) =>
     {
