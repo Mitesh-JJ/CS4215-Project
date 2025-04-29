@@ -1,0 +1,58 @@
+[
+    {
+        "OPCODE" : "LOADC",
+        "VALUE"  : 100
+    },
+    {
+        "OPCODE"  : "DEFINE",
+        "ISCONST" : false,
+        "ID"      : "Idx"
+    },
+
+    {
+        "OPCODE" : "LABEL",
+        "ID"     : "Loop-Begin"
+    },
+    {
+        "OPCODE" : "LOADV",
+        "ID"     : "Idx"
+    },
+    {
+        "OPCODE" : "PRINT"
+    },
+
+    {
+        "OPCODE" : "LOADV",
+        "ID"     : "Idx"
+    },
+    {
+        "OPCODE" : "LOADC",
+        "VALUE"  : 1
+    },
+    {
+        "OPCODE" : "SUB"
+    },
+    {
+        "OPCODE" : "ASSIGN",
+        "ID"     : "Idx"
+    },
+
+    {
+        "OPCODE" : "LOADV",
+        "ID"     : "Idx"
+    },
+    {
+        "OPCODE" : "LOADC",
+        "VALUE"  : 0
+    },
+    {
+        "OPCODE" : "GT"
+    },
+    {
+        "OPCODE" : "CJUMP",
+        "TARGET" : "Loop-Begin"
+    },
+    {
+        "OPCODE" : "END"
+    }
+]

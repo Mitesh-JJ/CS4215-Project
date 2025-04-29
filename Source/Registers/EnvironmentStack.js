@@ -19,7 +19,7 @@ export class EnvironmentStack
     Define(Identifier, Reference)
     {
         if(this.IsDefined(Identifier))
-            Logger.RaiseException("Attempting to define an existing variable");
+            Logger.RaiseException("Attempting to redefine an existing variable");
         this.Buffer[this.Buffer.length - 1].set(Identifier, Reference);
     }
 

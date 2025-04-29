@@ -1,69 +1,43 @@
-import { MemoryManager } from "../Memory/MemoryManager.js"
-import { MemoryCell } from "../Memory/MemoryCell.js";
-
-import { TypeID } from "../Type/TypeID.js";
-
-import { Environment } from "./Environment.js";
-import { RuntimeStack } from "./RuntitmeStack.js";
-
 import { Logger } from "../Utils/Logger.js";
+import { LabelBuffer } from "../Registers/LabelBuffer.js";
+import { RuntimeStack } from "../Registers/RuntimeStack.js";
+import { ProgramBuffer } from "../Registers/ProgramBuffer.js";
+import { EnvironmentStack } from "../Registers/EnvironmentStack.js";
+
+import { MemoryManager } from "../Memory/MemoryManager.js";
+
+import { Subroutines } from "./Subroutines.js";
 
 export class ExecutionEngine
 {
     constructor()
     {
-        this.GlobalEnv = new Environment();
         this.Stack = new RuntimeStack();
-        this.MemCell = new MemoryCell(100);
-        this.MemManager = new MemoryManager(this.MemCell);
+        this.Memory = new MemoryManager();
+        this.LabelArray = new LabelBuffer();
+        this.Environment = new EnvironmentStack();
+        this.ProgramCounter = new ProgramBuffer();
     }
 
-    Execute(Instruction)
+    Execute(FilePath = null)
     {
-        const Subroutines =
+        const Begin = Date.now();
+        if(FilePath != null)
+            this.ProgramCounter.Import(FilePath);
+
+        while(true)
         {
-            PRINT: (Instruction) =>
-            {
-                console.log(this.Stack.Peek());
-            },
+            const Instruction = this.ProgramCounter.Advance();
+            if(Instruction.OPCODE == "END")
+                break;
 
-            POP: (Instruction) =>
-            {
-                this.Stack.Pop();
-            },
+            const Proc = Subroutines[Instruction.OPCODE];
+            if(Proc == undefined)
+                Logger.RaiseException(`Invalid Operation: ${Instruction.OPCODE}`);
 
-            LOADC: (Instruction) =>
-            {
-                this.Stack.Push(Instruction.Value);
-            },
-
-            LOAD: (Instruction) =>
-            {
-                const Reference = this.GlobalEnv.Get(Instruction.Identifier);
-                const Value = Reference.GetValue();
-                this.Stack.Push(Value);
-            },
-
-            ASSIGN: (Instruction) =>
-            {
-                const Value = this.Stack.Peek();
-                const IsConst = false;
-                const Reference = this.MemManager.Allocate(TypeID.Float, Value, IsConst);
-                this.GlobalEnv.Add(Instruction.Identifier, Reference.Duplicate());
-                Reference.Detach();
-            }
+            Proc(this, Instruction);
         }
 
-        const Proc = Subroutines[Instruction.OpCode];
-        if(Proc == undefined)
-            Logger.RaiseException(`Invalid Operation "${OpCode}"`);
-        Proc(Instruction);
-    }
-
-    DumpStack()
-    {
-        Logger.Info(`Stack Dump (${this.Stack.Data.length})`);
-        for(let i = 0; i < this.Stack.Data.length; i++)
-            Logger.Info(`[${i}] ${this.Stack.Data[i]}`);
+        Logger.Info(`Execution successful (${Date.now() - Begin}ms)`);
     }
 };

@@ -5,7 +5,7 @@ export class ProgramBuffer
 {
     constructor()
     {
-        this.Buffer = [{ "OPCODE": "EOE" }];
+        this.Buffer = [{ "OPCODE": "END" }];
         this.Counter = -1;
     }
 
@@ -14,7 +14,6 @@ export class ProgramBuffer
         this.Counter = -1;
         this.Buffer = fs.readFileSync(FilePath);
         this.Buffer = JSON.parse(this.Buffer);
-        Logger.Info(this.Buffer);
     }
 
     JumpTo(Index)
